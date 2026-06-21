@@ -27,7 +27,43 @@ npm run dev:all
 
 > `localhost`는 HTTPS 없이도 카메라 사용이 가능합니다.
 
-## Worker 배포 (프로덕션)
+## Cloudflare 배포 (GitHub 연동)
+
+CloudAlcove는 **Worker(시그널링)** 와 **Pages(프론트)** 를 **각각 따로** 배포합니다.
+
+### 1) Workers Builds — 시그널링 Worker
+
+대시보드 → **Workers & Pages → cloudalcove → Settings → Builds**
+
+| 항목 | 값 |
+|---|---|
+| Build command | *(비워두기)* |
+| Deploy command | `npx wrangler deploy --config worker/wrangler.toml` |
+
+> Build command에 `npm run deploy:worker`를 넣고 Deploy command에 `npx wrangler deploy`를 쓰면 **Worker가 두 번 배포**되거나, 루트 `wrangler.toml`(Pages용) 때문에 **deploy 단계에서 실패**합니다.
+
+배포 성공 시 Worker URL 예:
+
+```
+https://cloudalcove.ip9mong.workers.dev
+→ WebSocket: wss://cloudalcove.ip9mong.workers.dev
+```
+
+### 2) Pages — React 프론트엔드
+
+대시보드 → **Workers & Pages → Create → Pages → Connect to Git**
+
+| 항목 | 값 |
+|---|---|
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Environment variable | `VITE_SIGNALING_URL` = `wss://cloudalcove.ip9mong.workers.dev` |
+
+환경 변수는 **Production**에 설정한 뒤 **Redeploy**해야 빌드에 반영됩니다.
+
+---
+
+## Worker 배포 (CLI)
 
 ```bash
 npm run deploy:worker
@@ -39,7 +75,7 @@ npm run deploy:worker
 VITE_SIGNALING_URL=wss://cloudalcove.<your-subdomain>.workers.dev
 ```
 
-## Pages 배포 (프론트엔드)
+## Pages 배포 (CLI)
 
 ```bash
 npm run deploy:pages
