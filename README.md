@@ -36,7 +36,7 @@ npm run deploy:worker
 배포 후 Worker URL을 `.env`에 설정:
 
 ```env
-VITE_SIGNALING_URL=wss://cloudalcove-signaling.<your-subdomain>.workers.dev
+VITE_SIGNALING_URL=wss://cloudalcove.<your-subdomain>.workers.dev
 ```
 
 ## Pages 배포 (프론트엔드)
