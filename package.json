@@ -1,0 +1,36 @@
+{
+  "name": "cloudalcove",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:worker": "wrangler dev --config worker/wrangler.toml",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:worker\"",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "deploy:worker": "wrangler deploy --config worker/wrangler.toml",
+    "deploy:pages": "npm run build && wrangler pages deploy dist --project-name=cloudalcove",
+    "deploy": "npm run deploy:worker && npm run deploy:pages"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2",
+    "simple-peer": "^9.11.1",
+    "events": "^3.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.10",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/simple-peer": "^9.11.8",
+    "@vitejs/plugin-react": "^4.5.2",
+    "concurrently": "^9.1.2",
+    "tailwindcss": "^4.1.10",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "wrangler": "^4.20.0",
+    "@cloudflare/workers-types": "^4.20250605.0"
+  }
+}
