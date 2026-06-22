@@ -45,9 +45,17 @@ export function hasTurnServer(): boolean {
   })
 }
 
+/** Cloudflare Pages 배포 시 시그널링 Worker (env 미설정 폴백) */
+const DEFAULT_PRODUCTION_SIGNALING_URL = 'wss://cloudalcove.ip9mong.workers.dev'
+
 export function getSignalingBaseUrl(): string {
   const env = import.meta.env.VITE_SIGNALING_URL as string | undefined
-  if (env) return env.replace(/\/$/, '')
+  if (env?.trim()) return env.replace(/\/$/, '')
+
+  // Pages 도메인은 정적 호스팅만 제공 — Worker로 연결
+  if (import.meta.env.PROD && window.location.hostname.endsWith('.pages.dev')) {
+    return DEFAULT_PRODUCTION_SIGNALING_URL
+  }
 
   const { protocol, host } = window.location
   const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
